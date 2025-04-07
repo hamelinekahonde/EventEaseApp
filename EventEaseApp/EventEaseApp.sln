@@ -1,0 +1,41 @@
+-- Create the Venue table
+CREATE TABLE Venue (
+    VenueId INT IDENTITY(1,1) PRIMARY KEY,
+    VenueName NVARCHAR(100) NOT NULL,
+    Location NVARCHAR(MAX) NOT NULL,
+    Capacity INT NOT NULL,
+    ImageUrl NVARCHAR(MAX)
+);
+
+-- Create the Event table
+CREATE TABLE Event (
+    EventId INT IDENTITY(1,1) PRIMARY KEY,
+    EventName NVARCHAR(100) NOT NULL,
+    EventDate DATE NOT NULL,
+    Description NVARCHAR(500),
+    VenueId INT NULL, -- Nullable foreign key
+
+    CONSTRAINT FK_Event_Venue FOREIGN KEY (VenueId)
+        REFERENCES Venue(VenueId)
+        ON DELETE SET NULL
+);
+
+-- Create the Booking table
+CREATE TABLE Booking (
+    BookingId INT IDENTITY(1,1) PRIMARY KEY,
+    EventId INT NOT NULL,
+    VenueId INT NOT NULL,
+    BookingDate DATE NOT NULL,
+
+    CONSTRAINT FK_Booking_Event FOREIGN KEY (EventId)
+        REFERENCES Event(EventId)
+        ON DELETE CASCADE,
+
+    CONSTRAINT FK_Booking_Venue FOREIGN KEY (VenueId)
+        REFERENCES Venue(VenueId)
+        ON DELETE CASCADE
+);
+
+-- Prevent double bookings
+CREATE UNIQUE INDEX IX_Booking_VenueId_BookingDate
+ON Booking (VenueId, BookingDate);

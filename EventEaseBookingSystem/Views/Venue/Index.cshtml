@@ -1,0 +1,56 @@
+﻿@model IEnumerable<EventEase.VenueBookingSystem.Models.Venue>
+
+@{
+    ViewData["Title"] = "Venue Information";
+}
+
+<h1>Venues</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create New Venue</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.VenueName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Capacity)
+            </th>
+            <th>
+                Image</th> <!-- No model property for 'Image', so keep hardcoded -->
+            <th>Actions</th> <!-- Same here -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.VenueName</td>
+                <td>@item.Location</td>
+                <td>@item.Capacity</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        <img src="@item.ImageUrl" width="100" />
+                    }
+                    else
+                    {
+                        <span>No Image</span>
+                    }
+                </td>
+                @* Uncomment if you want action buttons *@
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.VenueId" class="btn btn-warning">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.VenueId" class="btn btn-info">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.VenueId" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

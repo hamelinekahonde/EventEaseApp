@@ -1,0 +1,42 @@
+﻿@model EventEase.VenueBookingSystem.Models.Venue
+
+@{
+    ViewData["Title"] = "Venue Details";
+}
+
+<h1>@Model.VenueName</h1>
+<p><strong>Location:</strong> @Model.Location</p>
+<p><strong>Capacity:</strong> @Model.Capacity</p>
+
+<!-- Display Bookings and Events -->
+<h2>Bookings</h2>
+@if (Model.Bookings != null && Model.Bookings.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Event Name</th>
+                <th>Booking Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in Model.Bookings)
+            {
+                <tr>
+                    <td>@booking.Event.EventName</td>
+                    <td>@booking.BookingDate.ToString("d")</td>
+                    <td>
+                        <a asp-action="Details" asp-controller="Booking" asp-route-id="@booking.BookingId" class="btn btn-info">View Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No bookings found for this venue.</p>
+}
+
+<a asp-action="Index" class="btn btn-primary">Back to List</a>
